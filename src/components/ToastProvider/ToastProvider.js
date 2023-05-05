@@ -1,5 +1,6 @@
 import React from "react";
 import { AlertOctagon, AlertTriangle, CheckCircle, Info } from "react-feather";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 
 export const ToastContext = React.createContext();
 
@@ -13,14 +14,6 @@ const ICONS_BY_VARIANT = {
 /*Initial states */
 const INITIAL_MESSAGE = "";
 const INITIAL_VARIANT = "notice";
-
-/**custom hook */
-export function useEscapeKey(handleEscapeKey) {
-  React.useEffect(() => {
-    window.addEventListener("keydown", handleEscapeKey);
-    return () => window.removeEventListener("keydown", handleEscapeKey);
-  }, [handleEscapeKey]);
-}
 
 function ToastProvider({ children }) {
   const [message, setMessage] = React.useState(INITIAL_MESSAGE);
@@ -50,6 +43,8 @@ function ToastProvider({ children }) {
   const handleEscapeKey = () => {
     if (window.event.key === "Escape") setToasts([]);
   };
+
+  useEscapeKey(handleEscapeKey);
 
   return (
     <ToastContext.Provider
