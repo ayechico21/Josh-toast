@@ -1,14 +1,26 @@
 import React from "react";
+import { AlertOctagon, AlertTriangle, CheckCircle, Info } from "react-feather";
 
 import Button from "../Button";
-
 import styles from "./ToastPlayground.module.css";
+import Toast from "../Toast";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
+const ICONS_BY_VARIANT = {
+  notice: Info,
+  warning: AlertTriangle,
+  success: CheckCircle,
+  error: AlertOctagon,
+};
 
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState("");
+  const [isToast, setIsToast] = React.useState(false);
+  const icon = ICONS_BY_VARIANT[variant];
+
+  const toggleToast = () => setIsToast((cur) => !cur);
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -16,6 +28,14 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
+      {isToast && (
+        <Toast
+          message={message}
+          variant={variant}
+          icon={icon}
+          toggleToast={toggleToast}
+        />
+      )}
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
           <label
@@ -60,7 +80,7 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button>Pop Toast!</Button>
+            <Button onClick={toggleToast}>Pop Toast!</Button>
           </div>
         </div>
       </div>
