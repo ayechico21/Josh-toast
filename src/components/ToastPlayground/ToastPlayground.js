@@ -4,7 +4,7 @@ import Button from "../Button";
 import styles from "./ToastPlayground.module.css";
 import ToastShelf from "../ToastShelf";
 import { ToastContext } from "../ToastProvider";
-
+import { useEscapeKey } from "../ToastProvider";
 function ToastPlayground() {
   const {
     message,
@@ -13,7 +13,11 @@ function ToastPlayground() {
     setVariant,
     VARIANT_OPTIONS,
     addToast,
+    handleEscapeKey,
   } = React.useContext(ToastContext);
+
+  useEscapeKey(handleEscapeKey);
+
   return (
     <div className={styles.wrapper}>
       <header>

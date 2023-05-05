@@ -14,6 +14,14 @@ const ICONS_BY_VARIANT = {
 const INITIAL_MESSAGE = "";
 const INITIAL_VARIANT = "notice";
 
+/**custom hook */
+export function useEscapeKey(handleEscapeKey) {
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleEscapeKey);
+    return () => window.removeEventListener("keydown", handleEscapeKey);
+  }, [handleEscapeKey]);
+}
+
 function ToastProvider({ children }) {
   const [message, setMessage] = React.useState(INITIAL_MESSAGE);
   const [variant, setVariant] = React.useState(INITIAL_VARIANT);
@@ -39,6 +47,10 @@ function ToastProvider({ children }) {
     setToasts(nextToasts);
   };
 
+  const handleEscapeKey = () => {
+    if (window.event.key === "Escape") setToasts([]);
+  };
+
   return (
     <ToastContext.Provider
       value={{
@@ -50,6 +62,8 @@ function ToastProvider({ children }) {
         toasts,
         addToast,
         removeToast,
+        setToasts,
+        handleEscapeKey,
       }}
     >
       {children}
